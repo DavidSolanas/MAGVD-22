@@ -9,7 +9,7 @@ rm(list=ls())
 #Esto se puede realizar a partir de una matriz ya creada o a partir de un 
 #data.frame con las con 3 columnas en orden: user | item | rating
 
-df <- read.csv("../db_export/ratings_reduced.csv")
+df <- read.csv("../../db_export/ratings_reduced.csv")
 
 head(df)
 
@@ -112,7 +112,7 @@ error
 # Evaluación de algoritmos según topN
 ################################################################################
 
-eval_scheme <- evaluationScheme(ui, method = "split", train = 0.9, given = 20, goodRating = 4)
+eval_scheme <- evaluationScheme(ui, method = "cross-validation", k = 10, given = 5, goodRating = 0)
 
 algos <- list("random" = list(name = "RANDOM", param = NULL),
               "UBCF_20nn" = list(name = "UBCF", param = list(nn = 20)),
@@ -130,7 +130,9 @@ algos <- list("random" = list(name = "RANDOM", param = NULL),
 # Se evaluarán los algoritmos para n = 1,3,5,10,15,20. La función eval entrena 
 #los algoritmos, predice y entrega la evaluación para todos los algoritmos.
 
-eval <- evaluate(eval_scheme, algos, type = "topNList", n = c(1,3,5,10,15,20))
+n_recommendations <- c(1, 5, seq(10, 100, 10))
+
+eval <- evaluate(eval_scheme, algos, type = "topNList", n = n_recommendations)
 plot(eval)
 plot(eval,"prec/rec")
 
