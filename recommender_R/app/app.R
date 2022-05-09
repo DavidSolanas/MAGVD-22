@@ -12,20 +12,10 @@ source("load_data.R", local = TRUE)$value
 
 ui <- fluidPage(
   sidebarPanel(
-    h2("Introduction"),
-    h5("This shiny app is a simple example for a movie recommender described in
-    a blog post by STATWORX. STATWORX is a consulting company for data science, 
-       machine learning and AI based in Frankfurt, Germany."),
-    uiOutput("tab"),
-    h5("To use this recommender, select up to 10 movies from the dropdown menue 
-       and rate them from 0 = bad to 5 = good. When you press the run button a
-       movie recommendation based on your rating will be displayed."),
-    br(),
-    h2("Select and rate movies"),
+    h2("Select and rate 10 movies from 0 to 5"),
     pickerInput(inputId = "movie_selection",
                 label = "",
                 choices = movie_names,
-                selected = movie_names[1:2],
                 options = pickerOptions(
                   actionsBox = FALSE,
                   maxOptions = 10 # maximum of options
@@ -53,10 +43,6 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   source("ui_server.R", local = TRUE)$value
   source("data_server.R", local = TRUE)$value
-  url <- a("here", href="http://127.0.0.1:80")
-  output$tab <- renderUI({
-    tagList("You can find this blog post ", url, ".")
-  })
 }
 
 shinyApp(ui = ui, server = server)

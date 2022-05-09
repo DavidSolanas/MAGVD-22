@@ -2,7 +2,8 @@ recomdata <- reactive({
   selected_movies <- movie_data %>%
     filter(movieId %in% new_movieId) %>%
     filter(title %in% input$movie_selection) %>%
-    arrange(title)
+    arrange(title) %>%
+    select(-c(genres))
   
   for(i in 1:nrow(selected_movies)){
     selected_movies$ratingvec[i] <- input[[as.character(selected_movies$title[i])]]
@@ -12,13 +13,20 @@ recomdata <- reactive({
     pull(ratingvec)
   rating_vec <- as.matrix(t(rating_vec))
   rating_vec <- as(rating_vec, "realRatingMatrix")
+  print("Predicting...")
   top_5_prediction <- predict(rec_mod, rating_vec, n = 5)
+  print("Finished")
   top_5_list <- as(top_5_prediction, "list")
+  print(top_5_list)
   top_5_df <- data.frame(top_5_list)
+  print("Dataframed")
   colnames(top_5_df) <- "movieId"
-  top_5_df$movieId <- as.numeric(levels(top_5_df$movieId))
+  print(top_5_df)
+  top_5_df$movieId <- as.numeric(top_5_df$movieId)
+  print(top_5_df)
   names <- left_join(top_5_df, movie_data, by="movieId")
-  names <- as.data.frame(names) %>%select(-c(movieId)) %>% 
+  print(names)
+  names <- as.data.frame(names) %>%select(-c(movieId, genres)) %>% 
     rename(Title = title)
   names
 })
