@@ -116,7 +116,7 @@ eval_scheme <- evaluationScheme(ui, method = "cross-validation", k = 10, given =
 
 algos <- list("random" = list(name = "RANDOM", param = NULL),
               "UBCF_20nn" = list(name = "UBCF", param = list(nn = 20)),
-              "UBCF_50nn" = list(name = "UBCF", param = list(nn = 50)),
+              "UBCF_40nn" = list(name = "UBCF", param = list(nn = 40)),
               "IBCF_Pearson" = list(name = "IBCF", param = list(method = "Pearson")),
               "IBCF_Tanimoto" = list(name = "IBCF", param = list(method = "Tanimoto")),
               "SVD" = list(name = "SVD"),
