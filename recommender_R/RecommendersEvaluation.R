@@ -84,8 +84,7 @@ r4 <- Recommender(train, "SVD")
 r5 <- Recommender(train, "ALS")
 r6 <- Recommender(train, "ALS_implicit")
 r7 <- Recommender(train, "RERECOMMEND")
-r8 <- Recommender(train, "LIBMF")
-r9 <- Recommender(train, "POPULAR")
+r8 <- Recommender(train, "POPULAR")
 
 # Predecir
 p1 <- predict(r1, known, type = "ratings")
@@ -96,7 +95,6 @@ p5 <- predict(r5, known, type = "ratings")
 p6 <- predict(r6, known, type = "ratings")
 p7 <- predict(r7, known, type = "ratings")
 p8 <- predict(r8, known, type = "ratings")
-p9 <- predict(r9, known, type = "ratings")
 
 # Cálculo del error
 error <- rbind("random" = calcPredictionAccuracy(p1, unknown),
@@ -106,8 +104,7 @@ error <- rbind("random" = calcPredictionAccuracy(p1, unknown),
                "als" = calcPredictionAccuracy(p5, unknown),
                "als_implicit" = calcPredictionAccuracy(p6, unknown),
                "rerecommend" = calcPredictionAccuracy(p7, unknown),
-               "libmf" = calcPredictionAccuracy(p8, unknown),
-               "popular" = calcPredictionAccuracy(p9, unknown),
+               "popular" = calcPredictionAccuracy(p8, unknown)
                )
 error
 
@@ -124,8 +121,10 @@ algos <- list("random" = list(name = "RANDOM", param = NULL),
               "IBCF_Tanimoto" = list(name = "IBCF", param = list(method = "Tanimoto")),
               "SVD" = list(name = "SVD"),
               "ALS" = list(name = "ALS"),
+              "ALS_implicit" = list(name = "ALS_implicit"),
               "ALS_5" = list(name = "ALS", param = list(n_factors = 5)),
-              "POPULAR" = list(name = "POPULAR", param = NULL))
+              "POPULAR" = list(name = "POPULAR", param = NULL),
+              "RERECOMMEND" = list(name = "RERECOMMEND", param = NULL))
 
 # Evaluar algoritmos
 # Se evaluarán los algoritmos para n = 1,3,5,10,15,20. La función eval entrena 
@@ -134,8 +133,9 @@ algos <- list("random" = list(name = "RANDOM", param = NULL),
 eval <- evaluate(eval_scheme, algos, type = "topNList", n = c(1,3,5,10,15,20))
 plot(eval)
 plot(eval,"prec/rec")
-getConfusionMatrix(eval[["POPULAR"]])
 
+getConfusionMatrix(eval[["ALS_implicit"]])
+getConfusionMatrix(eval[["POPULAR"]])
 
 
 
